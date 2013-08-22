@@ -43,6 +43,28 @@
 	chattr +i /etc/shadow; lsattr /etc/shadow
 	chattr -i /etc/shadow; lsattr /etc/shadow
 	
+
+## Add Swap Space
+	
+	dd if=/dev/zero of=/path/to/swapfile count=2097152 # create 1 G file
+	mkswap /path/to/swapfile
+	swapon -p 32767 /path/to/swapfile # use with lowest priority possible
+
+Optionally create an ``/etc/fstab`` entry:
+
+	/path/to/swapfile none	swap	sw,pri=32767	0	0
+
+## Reset Root Password, Access to Boot Loader Required
+Add ``1`` (after one blank space) to the kernel boot parameter to start in single mode. Reset password with ``passwd`` check if SELinux is disabled if it does not work (``setenforce 0``). If single user mode does not work ther is an alternative: Append ``init=/bin/bash`` to the boot options, remounting the root partition is necessary (``mount -o remount,rw /``).
+
+## Cut Connections from a Specific Address
+
+    cutter 10.10.0.45
+
+## Copy Disk with Progress Bar and Compression
+    parted /dev/sda # Get the disk size first
+    dd if=/dev/sda | pv -s 60022480896 | pigz --fast > /media/myExternalDrive/myBackup.img
+
 <!---
  vim: expandtab tabstop=4 shiftwidth=4
 -->

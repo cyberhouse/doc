@@ -19,7 +19,27 @@ Scenario: ``host1`` is accessible from the local machine,  but ``host2`` is only
 ### Command Line
 	ssh -A -t host1.example.com ssh -A -t host2 ssh -A host3
    
+## SSH through SSL, e.g. for IDS Evasion
+So traffic over 443 appears to be SSL, and therefore not triggering IDS. See also stunnel or Proxytunnel for alternative setups.
+
+	ssh -o ProxyCommand="openssl s_client -host <H> -port <P>" ...
+
+## Use PKCS8 for private Keys
+    mv ~/.ssh/id_rsa ~/.ssh/id_rsa.old
+    openssl pkcs8 -topk8 -v2 des3 -in ~/.ssh/id_rsa.old -out ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+    # Check that the converted key works; if yes, delete the old one:
+    rm ~/.ssh/id_rsa.old
+
+## Access Windows Share
+    smbclient -U "DOMAIN\user" //dc.domain.com/share/test/dir
+
+## Append Text to a File that Requires Raised Privileges
+
+    echo "some text" | sudo tee -a /path/file
+
 <!---
  vim: expandtab tabstop=4 shiftwidth=4
 -->
    
+

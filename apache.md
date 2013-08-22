@@ -34,6 +34,13 @@
     php_flag  log_errors on
     php_value error_log  /var/www/html/phperrors.log
 
+## Improve Security
+    Header always append X-Frame-Options SAMEORIGIN
+    TraceEnable Off
+    ServerSignature Off
+    ServerTokens Prod
+    
+
 <!---
  vim: expandtab tabstop=4 shiftwidth=4
 -->
