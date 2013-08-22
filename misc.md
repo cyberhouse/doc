@@ -55,7 +55,7 @@ Optionally create an ``/etc/fstab`` entry:
 	/path/to/swapfile none	swap	sw,pri=32767	0	0
 
 ## Reset Root Password, Access to Boot Loader Required
-Add ``1`` (after one blank space) to the kernel boot parameter to start in single mode. Reset password with ``passwd`` check if SELinux is disabled if it does not work (``setenforce 0``). If single user mode does not work ther is an alternative: Append ``init=/bin/bash`` to the boot options, remounting the root partition is necessary (``mount -o remount,rw /``).
+Add ``1`` (after one blank space) or ``S`` or ``Single`` to the kernel boot parameter to start in single mode. Reset password with ``passwd`` check if SELinux is disabled if it does not work (``setenforce 0``). If single user mode does not work ther is an alternative: Append ``init=/bin/bash`` to the boot options, remounting the root partition is necessary (``mount -o remount,rw /``).
 
 ## Cut Connections from a Specific Address
 
