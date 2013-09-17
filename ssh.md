@@ -38,6 +38,10 @@ So traffic over 443 appears to be SSL, and therefore not triggering IDS. See als
 
     echo "some text" | sudo tee -a /path/file
 
+## Feed Local Wireshark with Remote ``tcpdump``
+
+    ssh gw tcpdump -i eth3 -U -s0 -w - 'tcp port 80' | wireshark -k -w /tmp/gw.cap -b filesize:50000 -b files:10 -i -
+
 <!---
  vim: expandtab tabstop=4 shiftwidth=4
 -->

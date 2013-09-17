@@ -39,7 +39,17 @@
     TraceEnable Off
     ServerSignature Off
     ServerTokens Prod
-    
+
+## Permissions
+    HTTPDUSER=www-data; HTTPUSER=foo HTTPDOCS=/var/www;
+    usermod -a -G $HTTPDUSER $HTTPUSER;
+    chown root:$HTTPDUSER $HTTPDOCS
+    chmod 2775 $HTTPDOCS
+    echo 'umask 002' >> /etc/apache2/envvars
+    echo 'umask 002' >> /home/$HTTPUSER/.zshrc.local
+    echo 'umask 002' >> /home/$HTTPUSER/.bashrc
+    find $HTTPDOCS -type d -exec chmod 2775 {} \;
+    find $HTTPDOCS -type f -exec chmod 0664 {} \;
 
 <!---
  vim: expandtab tabstop=4 shiftwidth=4

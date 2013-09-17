@@ -65,6 +65,9 @@ Add ``1`` (after one blank space) or ``S`` or ``Single`` to the kernel boot para
     parted /dev/sda # Get the disk size first
     dd if=/dev/sda | pv -s 60022480896 | pigz --fast > /media/myExternalDrive/myBackup.img
 
+## Get the Filesystem Age
+	tune2fs -l $(df -lh / |(read; awk '{print $1; exit}')) | grep -i created
+
 <!---
  vim: expandtab tabstop=4 shiftwidth=4
 -->
