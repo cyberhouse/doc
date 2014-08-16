@@ -1,3 +1,4 @@
+<html>
 <!--
 # vim:ft=zsh:
 -->
@@ -10,38 +11,40 @@
 <h2>ZSH Tips by ZZapper</h2>
 <a href="http://www.zzapper.co.uk/">zzappers Tips Home</a> 
 <br><br>
-Updated : 16Aug13 *N* Marks New   *C* Corrected
+Updated : 16Jul14 *N* Marks New   *C* Corrected
 <pre>
 > zsh -fx   # start a "clean" version of zsh (without your startup files)
 print $ZSH_VERSION
 <a href="http://www.zzapper.co.uk/">Tips Home</a> 
+<a href="https://twitter.com/dailyzshtip">Daily ZSH Tip on Twitter</a>  *N*
+<a href="http://www.zzapper.co.uk/zshtweets.html">ZSH TIPS on Twitter Archive</a> 
 <a href="http://www.zsh.org/mla/">http://www.zsh.org/mla/</a> Searchable Mailing List Archive
 <a href='http://grml.org/zsh/zsh-lovers.html'>http://grml.org/zsh/zsh-lovers.html</a> 
 <a href='http://zsh.sourceforge.net/Doc/'>http://zsh.sourceforge.net/Doc/</a>  Everything? *C*
-<a href='http://www.scribd.com/doc/6775538/Zsh-Reference-Card'>Zsh-Reference-Card</a> *N*
+<a href='http://www.bash2zsh.com/zsh_refcard/refcard.pdf'>Zsh-Reference-Card</a> *C*
 <a href='http://zshwiki.org/'>http://zshwiki.org/</a>
 man zsh
 man zshall
 <hr width=80%>
-zsh          Zsh overview (this section)
-zshmisc      Anything not fitting into the other sections
-zshexpn      Zsh command and parameter expansion
-zshparam     Zsh parameters
-zshoptions   Zsh options
-zshbuiltins  Zsh built-in functions
-zshzle       Zsh command line editing
-zshcompwid   Zsh completion widgets
-zshcompsys   Zsh completion system
-zshcompctl   Zsh completion control
-zshmodules   Zsh loadable modules
-zshzftpsys   Zsh built-in FTP client
-zshall       Meta-man page containing all of the above
+man zsh          Zsh overview 
+man zshmisc      Anything not fitting into the other sections
+man zshexpn      Zsh command and parameter expansion
+man zshparam     Zsh parameters
+man zshoptions   Zsh options
+man zshbuiltins  Zsh built-in functions
+man zshzle       Zsh command line editing
+man zshcompwid   Zsh completion widgets
+man zshcompsys   Zsh completion system
+man zshcompctl   Zsh completion control
+man zshmodules   Zsh loadable modules
+man zshzftpsys   Zsh built-in FTP client
+man zshall       Meta-man page containing all of the above
 <hr width=80%>
 /usr/share/zsh/htmldoc/zsh_toc.html
 <hr width=80%>
 Install on Linux
 > yum install zsh *N*
-> yum undate zsh *N*
+> yum update zsh *N*
 <hr width=80%>
 Global aliases
 Searching and filtering my mysql database with my own utility searchdb
@@ -62,6 +65,7 @@ gvim.exe *~vssver.scc(.om[1]) & # newest file ignoring any vssver.scc
 vi -p *(.om[1,3]) # open 3 newest files in tabs (gvim)
 ls -lt  **/*(.om[1,20]) # list 20 newest files anywhere in directory hierarchy (very useful) *N*
 ls -lt  **/*.php(.om[1,20]) # list 20 newest php files anywhere in directory hierarchy (very useful) *N*
+grep -i "$1" **/*.{js,php,css}~(libs|temp|tmp|test)/* # exclude directories from grep *N* EXTENDED_GLOB required
 ls -lt **/*~*vssver.scc(.om[1,20])  # excluding vssver.scc *N*
 ls -lt **/^vssver.scc(.om[1,20])    #  excluding vssver.scc (simpler) *N*
 ls -lt **/^(vssver.scc|*.ini)(.om[1,20]) # excluding vssver and any *.ini *N*
@@ -88,6 +92,10 @@ ls -l *(Lk+100)   # list file size larger/greater than 100kb *N*
 ls -l *(Lm+2)     # list file size larger/greater than 2 mbs *N*
 ls **/*(.Lm+10)   # list files larger than 10MB anywhere in hierarchy *N*
 ls -hlS **/*(.Lm+2)  | less  # list largest files  largest first  *N*
+ls *.*(mh3)  # modified 3 hours ago
+ls *.*(mh-3) # less than 3 hours
+ls *.*(mh+3) # more than 3 hours
+ls *.*(^mh3) # all files not 3 hours  old
 # counts requires extended globbing *N*
 setopt EXTENDED_GLOB   # lots of clever stuff requires this
 ls DATA_[0-9](#c3).csv  # match all files DATA_nnn.csv  *N*
@@ -95,13 +103,23 @@ ls a(#c3).txt     # match aaa.txt   *N*
 ls DATA_[0-9](#c4,7).csv  # match DATA_nnnn.csv to DATA_nnnnnnn.txt *N*
 ls DATA_[0-9](#c4,).csv  # match DATA_nnnn.csv to DATA_nnnnn.txt etc *N*
 ls DATA_[0-9](#c,4).csv  # match DATA_n.csv to DATA_nnn.txt *N*
+touch {1..5} {6,7,8,12} {00..03} # *N*
+ls <-> <-6> <4-> <4-5> 0<-> {1..5} {2,3} {00..03} (4|5) [3-4]  [3-47-8] 0? ?2 *2 # *N*
+touch {y,y2}.cfm
+ls y2#.cfm y{2,}.cfm y(2|).cfm {y2,y}.cfm (y|y2).cfm y*.cfm # *N*
 #
 grep -i "$1" */*.php~libs/*~temp/*~test/* # exclude directories lib,temp,test from grep *N* EXTENDED_GLOB required
+# file ownership
+ls -ld *.*(u:apache:)
+# filering files a-m but only if owned by apache 
+ls -dl (*.*~[a-m]*)(^u:apache:.^x)
+# grep
 grep -i "$1" **/*.{js,php,css}~(libs|temp|temp|test)/* # exclude directories from grep *N* EXTENDED_GLOB required
 grep -iw '$direct' report/**/*.{inc,php}  # searching for a php variable
 <hr width=80%>
+# use tab to complete/display history item before executing
 !!
-!$ (last argument)
+!$ (last argument of previous command)
 !$:h (last argument, strip one level)
 !$:h:h (last argument, strip two levels)
 !?echo
@@ -113,6 +131,9 @@ vi !-2:2 (second parameter of second but last command)
 echo !:2-3   # echo previous parameters 2 to 3 *N*
 echo !:2*    # echo previous parameters 2 onwards  *N*
 echo !:2-    # echo previous parameters 2 onwards omitting last *N*
+
+touch 1 2 3    # *N*
+!!:0 !^ !:2 !$ !#$ !#:2 !#1 !#0   #  *U*
 
 history               # View recent commands
 !42                   # Re-execute history command 42
@@ -238,11 +259,15 @@ print ${param:&}   (last substitute)
 
 # Directory substitution (magic)
 # if you were in directory
+# cd old new
 /c/inetpub/dev.somehomes.co.uk/epsystem/eppigeon/
 cd dev www
 #would put you in parallel directory
 /c/inetpub/www.somehomes.co.uk/epsystem/eppigeon/
-
+# completion
+cd /v/w/h/<tab>
+# expand to
+# cd /var/www/html/
 <hr width=80%>
 # filtering the output of a command conventionally
 print $(history -n -1|sed 's/.* //')
@@ -253,18 +278,23 @@ gvim.exe $(history -n -1 | sed "s/^[^ ]* //;s/ .*//")
 print ${${(z)history[$((HISTCMD-1))]}[2]}
 <hr width=80%>
 # ls
-ls -ld **/*(/^F) # list any empty directories
+ls -ld *(/^F)  # list any empty sub-directories
+ls -ld **/*(/^F) # recursively list any empty sub-directories
 print **/*(/^F) | xargs -n1 -t rmdir #delete empty directories
 zargs rmdir -- ./**/*(/od) 2> /dev/null # deletes empty directories
 autoload zargs;zargs ./**/*.{php,inc,js} -- grep -i 'cons. unit'   *N* EXTENDED_GLOB
 zargs **/*.{js,php,css}~(libs|locallibs|test|dompdf)/* -- grep console.log *C* EXTENDED_GLOB
 zargs ./**/*.{php,inc,js} -- tar rvf dev2$(date '+%d-%m-%Y').tar *N*
+# grep whole file structure for php files with if ($var=4) (single equals) bug
+zargs ./**/*.{inc,php} -- grep -i 'if *( *$[a-z0-9_]*=[0-9"]'   ## detect if ($fred=2) type php errors (single equals) *N*
+# selectively tar a web root *N*
+zargs ./{html,live}/**/*.{php,inc,js}~(**/wiki|**/dompdf)/* -- tar rvf /tmp/web2$(date "+%d-%m-%Y").tar
 ls ^x*           # list all but x*
 #list all files without an extension ( no dot)
 ls *~*.*(.)
 # delete all directories Pictures_of_* except Pictures_of_beautiful_flowers
 rm -rf Pictures_of_^beautiful_flowers   # selective delete *N*
-ls (x*~x3|x5)    # list files x* except x3 and x5
+ls x*~(x3|x5)    # list files x* except x3 and x5
 ls **/fred*~*junk*/* # list all files fred* unless in a junk directory
 # grep, dont use egrep, grep -E is better
 # single quotes stop the shell, " quotes allow shell interaction
@@ -324,6 +354,7 @@ ls -lt **/*.txt(D.om[1,5]) # list 5 most recent files in hierarchy
 # list 5 most recent files in each sub-directory
 dirs=( '' **/*(DM/) ) eval 'ls ${^dirs}*(ND.om[1,5])'
 ls {^dev*,}/index.php(.N) # ignore directories beginning dev*
+ls (dev*|fred*|joe*)/index* # does not break if no matches
 ls **/index.php~dev*(/*)##   # ignore subdirectories dev* multi-level
 vi *(.om[1]^D)   # vi newest file ^D means switch off GLOB_DOTS ie ignore dot files
 ls *.txt(.om[1]) # ls newest *.txt file  *N*
@@ -336,9 +367,16 @@ ls *(m-1)        # files modified today
 ls *(m0)         # files modified today
 ls *(^m0)        # files NOT modified today *N*
 vi *(m0)         # re-edit all files changed today!
+cp *.mp3(mh-4) /tmp # copy files less than 4 hours old
+ls -ltd *(mh0)    # list files modified only in last hour
 ls *.{aux,dvi,log,toc} # rm latex temp files  *C*
 rm ./*(Om[1,-11])# removes all files but the ten newest ones (delete all but last 10 files in a directory)
 mv *.*(^m-1) old/ # move all but today's files to sub-directory archive older files *N*
+# exact dates (N)
+ls -l *.*(mM4)
+autoload -U age
+ls -tl *.*(e#age 2014/06/01 now#)
+ls -tl *(.e#age 2014/06/01 2014/06/30#)
 
 files=(${(f)"$(ls *$**)"}(.N))   # store matching files *N*
 
@@ -346,7 +384,7 @@ ls *(n:t)        # order by name strip directory
 ls **/*(On:t)    # recursive reverse order by name, strip directory
 ls PHP*/**/*.php # recursive but only for subdirectories PHP*
 ls *.c(:r)       # strip suffix
-ls **/*(.)       # only files no directories
+ls **/*(.)       # only files no directories (.) means files only
 ls -ld *(/)      # list only directories
 <hr width=80%>
 #oddities
@@ -371,6 +409,13 @@ files=(${(f)"$(egrepcmd1l)"} ) # push a sentence to an array (where egrepcmd1l i
 % print ${array:t}
 .zshenv .zshrc .zlogout
 
+
+<hr width=80%>
+# zsh one liners
+alias -g NF='*(.om[1])' # newest file
+# parse xml file putting each tag on a new line
+perl -ne 's/(<\/\w+>)/$1\n/g; print' < NF > $(print NF).txt
+cat NF > $(print NF).txt
 <hr width=80%>
 # variable substitution
 somevar="bu&^*ck"                  # variable with mucky characters
@@ -385,6 +430,9 @@ file=${1/\//C:\/}                  # substitute / with c:/ ANYWHERE in string
 file=${1/#\//C:\/}                 # substitute / with c:/ Beginning of string
 file=${1/%\//C:\/}                 # substitute / with c:/ End of string
                                    # note # & % are using to match beginning and end
+JUNK=R.E.M.                        # substitute last . for a _
+print ${JUNK/.(#e)/_}              # substitute last . for a _
+print ${JUNK/%./_}                 # substitute last . for a _
 wpath=${wpath//\//\\\\}            # substitute Unix / with dos \ slashes *N*
 upath=${wpath//\\/\/}              # convert backslashes to forward slashes (Dos to Unix
 dpath=${upath/#\/c\//c:/}          # convert /c/path/ to c:\path\ *N*
@@ -414,7 +462,7 @@ fi
 echo -n $col
 echo $href > /dev/clipboard | more
 }
-# create vim scratch files v1,v2 to v9
+# access vim scratch files v1,v2 to v9
 function vx{0..9} {gvim.exe c:/aax/${0/#v/} &}
 #
 # create vim scratch files va,vb to vz
@@ -448,6 +496,7 @@ cd ${drive}/inetpub/wwwdev/www.some.co.uk/
 # chaining two modifications 
 # .om[1] gives newest file
 # cyg is a zsh function doing a path conversion e.g. /c/ to C:/ *C*
+cyg(){reply=("$(cygpath -m $REPLY)")}
 gvim.exe $(echo /c/aax/*(.om[1]))(+cyg) &  ### nested
 gvim.exe /c/aax/*(.om[1]+cyg) &            #### both operations
 
@@ -465,6 +514,8 @@ cd ~5                           # cd to fifth directory in directory stack
 cd -&lt;tab complete> then type number of directory
 dirs -p                         # display recent directories *N*
 cp file ~1                      # where 1 is first entry in pushd stack
+#
+cp file.txt ~+&lt;TAB>          # select recent directory *N*
 pushd +2                        # cd to 3rd entry in pushd stack
 #zsh completion
 startfilename&lt;tab>           # will complete matching files anywhere in $PATH
@@ -497,7 +548,7 @@ alias -g .....='../../../..'
 alias -s jpg='/c/program\ files/IrfanView/i_view32.exe'
 now just type the image name to launch irfanview
 alias -s php='c:/wamp/php/php.exe'  # now just type test.php to execute it *N*
-# named directories (these are a type of alias)
+# named directories (quick jump to a deep sub-directory)
 hash -d zsh="/usr/src/zsh"          # create shortcuts to deep directories  *N*
 cd ~zsh
 <hr width=80%>
@@ -508,7 +559,7 @@ ls =some_file                             # lists file anywhere in $PATH
 vim **/some_file                          # edits file under under current dir
 rm /c/intranet/**/*.stackdump             # specify recursion at a sub-directory *N*
 # modifying more than one file (multios)
-# writes ls results to file1 & file2 appends to filec
+# writes ls results to file1 & file2 appends to file3
 ls > file1 > file2 >> file3 | wc          # multi-io
 myscript >&1 >output.txt                  # log a script output
 #Redirection to file as well as send on to pipe:
@@ -525,9 +576,10 @@ zmv '(* *)' '${1// /}'
 zmv -Q "(**/)(* *)(D)" "\$1\${2// /_}"
 # Change the suffix from *.sh to *.pl
 zmv -W '*.sh' '*.pl'
-# lowercase/uppercase all files/directories
-$ zmv '(*)' '${(L)1}' # lowercase
-$ zmv '(*)' '${(U)1}' # uppercase
+# lowercase/uppercase all files/directories (-i) interactive
+$ zmv -i '(*)' '${(L)1}' # lowercase
+$ zmv -i '(*)' '${(U)1}' # uppercase
+$ zmv '([a-z])(*).txt' '${(C)1}$2.txt' ; rename fred.txt to Fred.txt
 
 <hr width=80%>
 # initialize zsh/config *N*
@@ -551,6 +603,11 @@ zfls -l zshtips.html
 
 # replace every occurence of a file (zsh and bash)
 for f in */include/dbcommon.php; do;cp dbcommon.php $f; done
+# alternative for loop
+# replace every instance of file with new version
+for f (**/x) cp newx $f  
+for f (**/x) {cp newx $f } 
+for f in **/x; do;cp newx $f; done
 # create a clone of a file, modifying it on the fly *N*
 for i in {3,4}; sed s/flag=2/flag=$i/ fred.txt > fred$i.txt
 for i in {1..9}; sed s/flag=2/flag=$i/ fred.txt > fred$i.txt
@@ -606,9 +663,12 @@ vared PATH
 bindkey -v # vi mode line editting
 bindkey -M viins '^O' copy-prev-shell-word
 bindkey '^L' push-line # push current command into a buffer, allows you to do another command then returns to previous command
+# use cat > /dev/null and them press key to get keycode
 # configure F7 to output a command
 bindkey -s '^v&lt;F7>' "ls -l\n" # configure F7 to output 'ls -l' 
 bindkey -s "^[[18~" "ls -l\n" # You must actually type Control-v F7 this is what it looks like on my system : 
+# put a command string onto f4
+bindkey -s "^[OS"  "\^d\^c\n"
 
 <hr width=80%>
 # Prompt at end of command line
@@ -621,6 +681,8 @@ print '\e[1;34m fred'
 # color module
 autoload colors ; colors
 print "$bg[cyan]$fg[blue]Welcome to man zsh-lovers" >> $TTY
+PROMPT="%{$bg[cyan]%}%{$fg[red]%}%n%{$reset_color%}%{$bg[cyan]%}@%{$fg[red]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%{$bg[cyan]%}%% "
+echo "$bg[blue]$fg[yellow]highlight a message"
 <hr width=80%>
 curl -u userid:password -d status=" updating twitter with from curl " http://twitter.com/statuses/update.xml
 <hr width=80%>
@@ -629,13 +691,12 @@ autoload -U compinit
 compinit
 autoload      edit-command-line
 zle -N        edit-command-line
-bindk100 26978  100 26978    0     0  87240      0 --:--:-- --:--:-- --:--:--  118k
-ey '\ee' edit-command-line
+bindkey '\ee' edit-command-line
 VISUAL='/bin/vim'
 EDITOR='/bin/vim'
 <hr width=80%>
 textify a phrase to create an image name
-s=’Fred Goat Dog’
+s="Fred Goat Dog"
 print ${(L)s:gs/ /-/}.jpg
 or
 print ${(L)s// /-}.jpg
@@ -652,24 +713,40 @@ print ${${(Cs:-:):-fred-goat-dog.jpg}%.*}
 var="$(&lt;file)"
 <hr width=80%> 
 Zsh Syntax Aide-Memoire (concentrated) *N*
+cd -<TAB>         # list recent dirs *N*
+cp 1.php ~-<TAB>  # list recent dirs *N*
 vi *(om[1])       # edit newest file
+vi *(om[1])<TAB>  # edit newest file *N*
 gvim -p *(m0)     # all files modified today
 mv *.*(^m-1) old/ # move all but todays files to sub-directory
 vi -p *(.om[1,3]) # open 3 newest files in tabs (gvim)
 ls *(^m0)         # files NOT modified today
 ls -l *(m4)       # list files modified exactly 4 days ago
 ls *.{jpg,gif}(.N) # do not break if one or other image type absent
-for i in *quote_* ; php -l $i # check syntax of PHP files with quote in name
+ls *.(jpg|gif|png)(.) # do not break if one or other image type absent *N*
+for i in quote_* ; php -l $i # check syntax of PHP files with quote in name
+for i (*.php) php -l $i # check syntax of all PHP files  *N*
+for f (*.php) { diff $f  ${PWD/html/staging}/$f} # diff all files in parallel directories *N*
 
 mv !?main&lt;TAB> # recall previous command containing the string main
-mv !?main?:*&lt;tab> # recall just parameters of previous command containing the string main
+mv !?main?$&lt;tab> # recall just last parameter of command containing the string main *C*
+# recall most recent cmd containing string 'client'
+!?client&lt;tab>
+# # recall last parameter of cmd containing 'client'
+vi !?client?$&lt;tab>
 ls -l **/main.{php,js,css}    #    *N*
 ls (x*~x[3-5])    # list files x* except x3 to x5
 ls **/*~*/.git/*  # ignore all git subdirectories *~* matches a path *N*
+ls (^(backup*|cache*|list*|tmp)/)##*(.) # ignore 4 directories  *N*
 !!:gs/fred/joe/       # edit previous command replace all fred by joe
+cp NF ${PWD/html/release}    # *N*
 mv Licence\ to\ Print\ Money.pdf !#^:gs/\\ // 
 <hr width=80%>
-# run a zsh script via ssh *N*
+# debug echo shell commands and provide trace info *N*
+# you do need XTRACE if you want to echo whats happening in your script
+setopt XTRACE VERBOSE
+<hr width=80%>
+# run a remote zsh script via ssh *N*
 ssh 192.168.1.218 -l root "zsh -c 'for i (/usr/*(/)) {ls \$i }'"
 # zsh menu
 echo "enter 0-2,a" 
@@ -682,12 +759,28 @@ case "$ans" in
  **) echo "wrong number $ans\n" ;;
 esac
 <hr width=80%>
+# useful aliases
+# flip between 2 deep parallel directories *N*
+alias flip=' cd html live > /dev/null &>1 || cd live html > /dev/null &>1'
+# syntax-check all php files in date order excluding certain
+alias phpall='for f (*.php~test.php(om)) {php -l $f}'
+# diff all files in parallel directories in date oder (exclude certain)
+alias diffall='for f (*.php~test.php(.om)) { diff -q $f  ${PWD/html/staging}/$f}'
+<hr width=80%>
+# bind history to up down keys
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+<hr width=80%>
 # insecure directories warning on cygwin
 # #run compaudit
 # compaudit
 # #It told me that my latest zsh install was insecure (directories were writable)
 # # The following solved the problem
-# chmod -R 644 /usr/share/zsh/
+# chmod -R 755 /usr/share/zsh/
 # chown -R myusername /usr/share/zsh (on Vista (as admin)
 <hr width=80%>
  
@@ -695,7 +788,7 @@ Sources newsgroup gmane.comp.shells.zsh.user newsserver news.gmane.org
 or via web
 http://news.gmane.org/gmane.comp.shells.zsh.user
 
-Everything here is &lt;b>Simple</b> zsh visit the above newsgroup for the &lt;b>Sick</b> stuff
+Everything here is &lt;b>Simple</b> zsh visit the above newsgroup for the &lt;b>complicated</b> stuff
 <hr width=80%>
 Upload this page (use yy@" on following line, to invoke upload zftp script)!!
 :!zshtipsftp

@@ -56,6 +56,7 @@
 \v^((tongue)@!.)*nose((tongue)@!.)*$
 .*nose.*\&^\%(\%(tongue\)\@!.\)*$ 
 :v/tongue/s/nose/&/gic
+'a,'bs/extrascost//gc       : trick: restrict search to between markers (answer n) [N]
 "----------------------------------------
 " *best-substitution*
 :%s/fred/joe/igc            : general substitute command
@@ -74,12 +75,17 @@
 :%s#&lt;[^>]\+>##g             : delete html tags, leave text (non-greedy)
 :%s#&lt;\_.\{-1,}>##g          : delete html tags possibly multi-line (non-greedy)
 :%s#.*\(\d\+hours\).*#\1#   : Delete all but memorised string (\1) [N]
+" parse xml/soap 
 %s#>&lt;\([^/]\)#>\r&lt;\1#g      : split jumbled up XML file into one tag per line [N]
+%s/&lt;/\r&/g                  : simple split of html/xml/soap  [N]
+:%s#&lt;[^/]#\r&#gic           : simple split of html/xml/soap  but not closing tag [N]
+:%s#&lt;[^/]#\r&#gi            : parse on open xml tag [N]
+:%s#\[\d\+\]#\r&#g          : parse on numbered array elements [1] [N]
 " VIM Power Substitute
 :'a,'bg/fred/s/dick/joe/igc : VERY USEFUL
 " duplicating columns
 :%s= [^ ]\+$=&&=            : duplicate end column
-:%s= \f\+$=&&=              : same thing
+:%s= \f\+$=&&=              : Dupicate filename
 :%s= \S\+$=&&               : usually the same
 " memory
 :%s#example#& = &#gic        : duplicate entire matched string [N]
@@ -89,6 +95,7 @@
 :%s/^\(.*\)\(\n\1\)\+$/\1/  : delete multiple duplicate lines [N]
 " non-greedy matching \{-}
 :%s/^.\{-}pdf/new.pdf/      : delete to 1st occurence of pdf only (non-greedy)
+%s#^.\{-}\([0-9]\{3,4\}serial\)#\1#gic : delete up to 123serial or 1234serial [N]
 " use of optional atom \?
 :%s#\&lt;[zy]\?tbl_[a-z_]\+\>#\L&#gc : lowercase with optional leading characters
 " over possibly many lines
@@ -224,6 +231,7 @@
 d/fred/                                :delete until fred
 y/fred/                                :yank until fred
 c/fred/e                               :change until fred end
+v12|                                   : visualise/change/delete to column 12 [N]
 "----------------------------------------
 " Summary of editing repeats [N]
 .      last edit (magic dot)
@@ -362,6 +370,7 @@ q:               : commandline history Window (puts you in full edit mode) (exit
 :&lt;C-F>           : history Window (exit CTRL-C)
 ----------------------------------------
 " Abbreviations & Maps
+" Maps are commands put onto keys, abbreviations expand typed text [N]
 " Following 4 maps enable text transfer between VIM sessions
 :map   &lt;f7>   :'a,'bw! c:/aaa/x       : save text to file x
 :map   &lt;f8>   :r c:/aaa/x             : retrieve text 
@@ -387,6 +396,8 @@ imap ,,, &lt;esc>bdwa&lt;&lt;esc>pa>&lt;cr>&lt;/&lt;esc>pa>&lt;esc>kA
 :for i in range(1, 12) | execute("map &lt;F".i.">") | endfor   [N]
 " for your .vimrc
 :cab ,f :for i in range(1, 12) \| execute("map &lt;F".i.">") \| endfor
+"chain commands in abbreviation
+cabbrev vrep tabe class.inc \| tabe report.php   ## chain commands [N]
 ----------------------------------------
 " Simple PHP debugging display all variables yanked into register a
 iab phpdb exit("&lt;hr>Debug &lt;C-R>a  ");
@@ -450,7 +461,7 @@ u@.              : execute command JUST typed in
 map &lt;C-J> &lt;C-W>j&lt;C-W>_
 map &lt;C-K> &lt;C-W>k&lt;C-W>_
 ----------------------------------------
-" Recording (BEST TIP of ALL)
+" Recording (BEST Feature of ALL)
 qq  # record to q
 your complex series of commands
 q   # end recording
@@ -679,9 +690,10 @@ qaq              : empty register "a"
 :h c_CTRL-R             : help for say &lt;C-R> in command mode
 :h v_CTRL-V             : visual mode
 :h tutor                : VIM Tutor
+&lt;C-]>                   : jump to {keyword} under  cursor in help file [C]
 &lt;C-[>, &lt;C-T>            : Move back & Forth in HELP History
 gvim -h                 : VIM Command Line Help
-:cabbrev h tab h        : open help in a tab [N]
+:cabbrev h tab help     : open help in a tab [N]
 ----------------------------------------
 " where was an option set
 :scriptnames            : list all plugins, _vimrcs loaded (super)
@@ -813,7 +825,7 @@ ga                                : View hex value of any character
 #Deleting non-ascii characters (some invisible)
 :%s/[\x00-\x1f\x80-\xff]/ /g      : type this as you see it
 :%s/[&lt;C-V>128-&lt;C-V>255]//gi       : where you have to type the Control-V
-:%s/[€-ÿ]//gi                     : Should see a black square & a dotted y
+:%s/[-ÿ]//gi                     : Should see a black square & a dotted y
 :%s/[&lt;C-V>128-&lt;C-V>255&lt;C-V>01-&lt;C-V>31]//gi : All pesky non-asciis
 :exec "norm /[\x00-\x1f\x80-\xff]/"        : same thing
 #Pull a non-ascii character onto search bar
@@ -984,7 +996,10 @@ vim:tw=78:ts=8:ft=help:norl:
 __END__
 ----------------------------------------
 "Read Vimtips into a new vim buffer (needs w3m.sourceforge.net)
-:tabe | :r ! w3m -dump http://zzapper.co.uk/vimtips.html    [N]
+:tabe | :r ! w3m -dump "http://zzapper.co.uk/vimtips.html"    [C]
+:silent r ! lynx -dump "http://zzapper.co.uk/vimtips.html" [N]
+" read webpage source html into vim
+gvim http://www.zzapper.co.uk/vimtips.html &
 ----------------------------------------
 updated version at http://www.zzapper.co.uk/vimtips.html
 ----------------------------------------
