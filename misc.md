@@ -2,9 +2,10 @@
 ## Serving Documents via HTTP
     while true; do nc -l -p 80 -q 1 < error.html; done
     while true; do { echo -e 'HTTP/1.1 200 OK\r\n'; cat index.html; } | nc -l 8080; done
-    python -m SimpleHTTPServer
+    python2 -m SimpleHTTPServer 8080
+    python3 -m http.server 8080
     twistd -n web –path .
-    php -S localhost:8000
+    php -S localhost:8080
 
 ## View markdown files in lynx
     pandoc -s -f markdown -t html =(curl https://raw.github.com/cyberhouse/doc/master/README.md) | lynx -stdin
